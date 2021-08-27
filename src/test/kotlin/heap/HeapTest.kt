@@ -6,7 +6,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.assertEquals
 
 /**
- * Unit test for all heap implementions.
+ * Unit test for all heap implementation.
  */
 class HeapTest {
     @ParameterizedTest
@@ -30,7 +30,7 @@ class HeapTest {
 
         val expected = listOf(-1, 0, 3, 10)
 
-        for (index in 0 until heap.size) {
+        for (index in expected.indices) {
             val actualValue = heap.poll()
             assertEquals(actual = actualValue, expected = expected[index])
         }
@@ -108,6 +108,7 @@ class HeapTest {
         @JvmStatic
         fun heaps() = listOf(
             Arguments.of(ArrayBinaryHeap<Int>()),
+            Arguments.of(TreeNodeBinaryHeap<Int>())
         )
     }
 }

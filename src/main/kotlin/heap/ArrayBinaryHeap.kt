@@ -55,7 +55,15 @@ class ArrayBinaryHeap<T : Comparable<T>>(private val comparator: Comparator<T> =
         return true
     }
 
-    override operator fun contains(value: T): Boolean = heap.contains(value)
+    override operator fun contains(value: T): Boolean {
+        for (element in heap) {
+            if (comparator.compare(element, value) == 0) {
+                return true
+            }
+        }
+
+        return false
+    }
 
     override fun iterator(): Iterator<T> = heap.iterator()
 
