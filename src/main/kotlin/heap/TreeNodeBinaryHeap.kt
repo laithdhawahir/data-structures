@@ -3,7 +3,7 @@ package heap
 import java.util.Comparator.naturalOrder
 
 /**
- * Implementation [Heap] using binary tree array.
+ * Implementation [Heap] using binary tree.
  */
 class TreeNodeBinaryHeap<T : Comparable<T>>(private val comparator: Comparator<T> = naturalOrder()) : Heap<T> {
     private class TreeNode<T>(
@@ -77,7 +77,7 @@ class TreeNodeBinaryHeap<T : Comparable<T>>(private val comparator: Comparator<T
         // Since we are removing a node by reference we are sure it will get removed so we -1 from count
         nodesCount--
 
-        // if last node is actually the root node this mean it was only 1 node
+        // if node count is zero this mean we had only one node before removing.
         if (nodesCount == 0) {
             rootNode = null
             incompleteNodes.clear()
