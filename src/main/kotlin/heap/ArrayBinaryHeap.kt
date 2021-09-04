@@ -8,6 +8,29 @@ import java.util.Comparator.naturalOrder
 class ArrayBinaryHeap<T : Comparable<T>>(private val comparator: Comparator<T> = naturalOrder()) : Heap<T> {
     private val heap = mutableListOf<T>()
 
+    companion object {
+        fun <T : Comparable<T>> fromArray(
+            list: List<T>,
+            comparator: Comparator<T> = naturalOrder()
+        ): ArrayBinaryHeap<T> {
+            val binaryHeap = ArrayBinaryHeap<T>(comparator)
+            binaryHeap.heap.addAll(list)
+
+            // start index is set to the second level from bottom of the binary tree,
+            // since each level in the tree increase by 2^i, where i is the level, assume that the tree level is h
+            // then last level is 2 ^ h elements, the level before it is 2 ^ ( h -1 ) which is same as (2 ^ h) / 2
+            // the -1 because it is a zero indexed array which mean it starts from 0 to size - 1
+            val startIndex = (list.size / 2) - 1
+
+            // iterate from second level from bottom to the top.
+            for (index in startIndex downTo 0) {
+                binaryHeap.bubbleDown(index)
+            }
+
+            return binaryHeap
+        }
+    }
+
     override val size: Int
         get() = heap.size
 

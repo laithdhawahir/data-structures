@@ -3,6 +3,7 @@ package heap
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 /**
@@ -101,6 +102,17 @@ class HeapTest {
 
         for ((index, value) in heap.withIndex()) {
             assertEquals(actual = value, expected = expected[index])
+        }
+    }
+
+    @Test
+    fun `WHEN ArrayBinaryHeap fromArray called GIVEN list of elements THEN return expected heap`() {
+        val elements = listOf(0, -1, 2, 4, 10, -3)
+        val heap = ArrayBinaryHeap.fromArray(elements)
+        val expectedHeap = listOf(-3, -1, 0, 4, 10, 2)
+
+        for ((index, actualValue) in heap.withIndex()) {
+            assertEquals(actual = actualValue, expected = expectedHeap[index])
         }
     }
 
