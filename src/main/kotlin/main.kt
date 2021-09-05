@@ -1,44 +1,42 @@
-import java.util.*
-
-class Node(val content: Int, val connections: MutableList<Node> = mutableListOf())
-
-fun breadthFirstSearch(node: Node) {
-    val queue = ArrayDeque<Node>()
-    val visitedNodes = mutableSetOf<Node>()
-
-    queue.add(node)
-    visitedNodes.add(node)
-
-    while (queue.isNotEmpty()) {
-        val curNode = queue.poll()!!
-
-        println(curNode.content)
-
-        for (neighborNode in curNode.connections) {
-            if (neighborNode !in visitedNodes) {
-                visitedNodes.add(neighborNode)
-                queue.add(neighborNode)
-            }
-        }
-    }
-}
+import graph.MatrixGraph
+import graph.kruskalMinimumSpanningTree
 
 fun main() {
-    val nodes = (0..12).map { Node(it) }
-    val connectionsMap = mapOf(
-        0 to listOf(1, 9),
-        1 to listOf(8),
-        9 to listOf(8),
-        8 to listOf(7),
-        7 to listOf(3, 6, 10, 11),
-        3 to listOf(2, 4),
-        6 to listOf(5)
-    )
+    val graph = MatrixGraph(vertices = setOf('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'), directedGraph = false)
 
-    connectionsMap.forEach { (nodeIndex, neighborNodeIndex) ->
-        println("$nodeIndex to $neighborNodeIndex")
-        nodes[nodeIndex].connections.addAll(neighborNodeIndex.map { nodes[it] })
+    with(graph) {
+        connect('A', 'B', 5.0)
+        connect('A', 'E', 1.0)
+        connect('A', 'D', 9.0)
+
+        connect('B', 'D', 2.0)
+        connect('B', 'C', 4.0)
+
+        connect('C', 'H', 4.0)
+        connect('C', 'I', 1.0)
+        connect('C', 'J', 8.0)
+
+        connect('D', 'E', 2.0)
+        connect('D', 'H', 2.0)
+        connect('D', 'G', 11.0)
+        connect('D', 'F', 5.0)
+
+        connect('E', 'F', 1.0)
+
+        connect('F', 'G', 7.0)
+
+        connect('G', 'H', 1.0)
+        connect('G', 'I', 4.0)
+
+        connect('H', 'I', 6.0)
+
+        connect('I', 'J', 0.0)
     }
 
-    breadthFirstSearch(nodes[0])
+    println("Before MST")
+    println(graph)
+
+    println()
+    println("After MST")
+    println(graph.kruskalMinimumSpanningTree())
 }
