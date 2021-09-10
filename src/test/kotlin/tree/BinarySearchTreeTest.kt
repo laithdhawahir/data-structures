@@ -96,9 +96,4 @@ class BinarySearchTreeTest {
         assertEquals(actual = binarySearchTree.levelOrder(), expected = listOf(8, 0, 10, 1, 3))
         assertEquals(actual = binarySearchTree.find(5), expected = false)
     }
-
-    @Test
-    fun `WHEN GIVEN THEN`() {
-
-    }
 }
