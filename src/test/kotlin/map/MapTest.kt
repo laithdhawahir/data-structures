@@ -25,24 +25,30 @@ class MapTest {
         map.put("Test 2", 2)
 
         assertEquals(actual = map.size, expected = 2)
-        assertEquals(actual = map.keys, expected = listOf("Test", "Test 2"))
-        assertEquals(actual = map.values, expected = listOf(1, 2))
+        assertEquals(actual = map.keys.sorted(), expected = listOf("Test", "Test 2"))
+        assertEquals(actual = map.values.sorted(), expected = listOf(1, 2))
         assertEquals(actual = map.contains("Test"), expected = true)
         assertEquals(actual = map.contains("Test 2"), expected = true)
         assertEquals(actual = map.contains("Another"), expected = false)
-        assertEquals(actual = map.entries.map { it.key to it.value }, expected = listOf("Test" to 1, "Test 2" to 2))
+        assertEquals(
+            actual = map.entries.map { it.key to it.value }.sortedBy { it.first },
+            expected = listOf("Test" to 1, "Test 2" to 2)
+        )
         assertEquals(actual = map["Test 2"], expected = 2)
 
         map["Test"] = 3
 
         assertEquals(actual = map.size, expected = 2)
-        assertEquals(actual = map.keys, expected = listOf("Test", "Test 2"))
-        assertEquals(actual = map.values, expected = listOf(3, 2))
+        assertEquals(actual = map.keys.sorted(), expected = listOf("Test", "Test 2"))
+        assertEquals(actual = map.values.sorted(), expected = listOf(2, 3))
         assertEquals(actual = map.contains("Test"), expected = true)
         assertEquals(actual = map.contains("Test 2"), expected = true)
         assertEquals(actual = map.contains("Another"), expected = false)
         assertEquals(actual = map["Test"], expected = 3)
-        assertEquals(actual = map.entries.map { it.key to it.value }, expected = listOf("Test" to 3, "Test 2" to 2))
+        assertEquals(
+            actual = map.entries.map { it.key to it.value }.sortedBy { it.first },
+            expected = listOf("Test" to 3, "Test 2" to 2)
+        )
     }
 
     @ParameterizedTest
@@ -54,13 +60,13 @@ class MapTest {
             map["Test $item"] = item
 
             assertEquals(actual = map.size, expected = item)
-            assertEquals(actual = map.keys.toSet(), expected = (1..item).map { "Test $it" }.toSet())
-            assertEquals(actual = map.values.toSet(), expected = (1..item).toSet())
+            assertEquals(actual = map.keys.sorted(), expected = (1..item).map { "Test $it" }.sorted())
+            assertEquals(actual = map.values.sorted(), expected = (1..item).toList())
             assertEquals(actual = map.contains("Test $item"), expected = true)
             assertEquals(actual = map.contains("Another"), expected = false)
             assertEquals(
-                actual = map.entries.map { it.key to it.value }.toSet(),
-                expected = (1..item).map { "Test $it" to it }.toSet()
+                actual = map.entries.map { it.key to it.value }.sortedBy { it.first },
+                expected = (1..item).map { "Test $it" to it }.sortedBy { it.first }
             )
             assertEquals(actual = map["Test $item"], expected = item)
         }
@@ -75,10 +81,13 @@ class MapTest {
 
         assertEquals(actual = map.remove("Test"), expected = true)
         assertEquals(actual = map.size, expected = 2)
-        assertEquals(actual = map.keys, expected = listOf("Test 3", "Test 2"))
-        assertEquals(actual = map.values, expected = listOf(3, 2))
+        assertEquals(actual = map.keys.sorted(), expected = listOf("Test 2", "Test 3"))
+        assertEquals(actual = map.values.sorted(), expected = listOf(2, 3))
         assertEquals(actual = map.contains("Test"), expected = false)
-        assertEquals(actual = map.entries.map { it.key to it.value }, expected = listOf("Test 3" to 3, "Test 2" to 2))
+        assertEquals(
+            actual = map.entries.map { it.key to it.value }.sortedBy { it.first },
+            expected = listOf("Test 2" to 2, "Test 3" to 3)
+        )
         assertEquals(actual = map["Test"], expected = null)
 
         assertEquals(actual = map.remove("Test 2"), expected = true)
@@ -104,6 +113,7 @@ class MapTest {
         @JvmStatic
         fun map() = listOf(
             Arguments.of(SeparateChainingHashMap<String, Int>()),
+            Arguments.of(OpenAddressingHashMap<String, Int>())
         )
     }
 }

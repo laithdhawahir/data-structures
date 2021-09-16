@@ -79,7 +79,7 @@ class SeparateChainingHashMap<T, R>(initialCapacity: Int = 8) : Map<T, R> {
         return hashCodeToIndex(key.hashCode())
     }
 
-    private fun hashCodeToIndex(hashCode: Int): Int = abs(hashCode) % hashTable.size
+    private fun hashCodeToIndex(hashCode: Int): Int = abs(hashCode % hashTable.size)
 
     private class SimpleMapEntry<T, R>(override var key: T, override var value: R, val hash: Int) :
         MapEntry<T, R>
